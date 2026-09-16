@@ -1,11 +1,36 @@
 spec:
-  include:
-    - project: root/ci-components
-      ref: '1.0.0'
-      file: /tests/samples/options.yml
   inputs:
+    sample:
+      description: 'Choose a component example, all component examples, or the standard Java pipeline'
+      default: all
+      options:
+        - all
+        - java-service
+        - maven-build
+        - build-and-test
+        - deploy-and-test
+        - two-deployables
+        - module-cucumber-test
+        - module-dependency-check
+        - module-deployment-select
+        - module-gitlab-release
+        - module-helm-deploy
+        - module-helm-publish
+        - module-image-build
+        - module-jib-build
+        - module-maven-build
+        - module-maven-publish
+        - module-npm-build
+        - module-npm-test
+        - module-release-check
+        - module-release-reserve
+        - module-sonar
     library_ref:
-      description: 'Released component version or full candidate commit SHA'
+      description: 'Component version or candidate SHA; used for the component examples'
+      default: '1.2.0'
+      regex: '^([a-f0-9]{40}|(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*))$'
+    pipeline_ref:
+      description: 'Pipeline version or candidate SHA; used only for java-service'
       default: '1.0.0'
       regex: '^([a-f0-9]{40}|(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*))$'
 ---
@@ -16,3 +41,12 @@ include:
     inputs:
       library-ref: $[[ inputs.library_ref ]]
       sample: $[[ inputs.sample ]]
+    rules:
+      - if: '"$[[ inputs.sample ]]" != "java-service"'
+  - project: root/ci-pipelines
+    ref: $[[ inputs.pipeline_ref ]]
+    file: /tests/sample.yml
+    inputs:
+      pipeline-ref: $[[ inputs.pipeline_ref ]]
+    rules:
+      - if: '"$[[ inputs.sample ]]" == "java-service"'

@@ -9,9 +9,11 @@ cd ci-samples
 
 De pipelines draaien in de [lokale GitLab-demo](https://github.com/woozer/ci-components/blob/main/installation.md). De onderstaande `localhost`-links werken na installatie. Voor zelfstandig bouwen en testen: [ontwikkelhandleiding](docs/development.md).
 
-Open [New pipeline](http://localhost:8929/root/ci-samples/-/pipelines/new), selecteer `main`, kies `sample` en klik op **New pipeline**. Met `all` voer je alle negentien voorbeelden op de beschermde `main` uit. Gebruik bij `library_ref` standaard de uitgebrachte componentversie `1.0.0`, kies een andere volledige versie of geef een volledige commit-SHA op om een kandidaatwijziging te testen. De [versieafspraken](https://github.com/woozer/ci-components/blob/main/docs/component-versions.md) gelden voor alle opgenomen bestanden.
+Open [New pipeline](http://localhost:8929/root/ci-samples/-/pipelines/new), selecteer `main`, kies `sample` en klik op **New pipeline**. Met `all` voer je alle negentien voorbeelden op de beschermde `main` uit. Gebruik bij `library_ref` standaard de uitgebrachte componentversie `1.2.0`, kies een andere volledige versie of geef een volledige commit-SHA op om een kandidaatwijziging te testen. De [versieafspraken](https://github.com/woozer/ci-components/blob/main/docs/component-versions.md) gelden voor alle opgenomen bestanden.
 
-Kies een van de vier pipelinevoorbeelden of een van de vijftien losse modules, zoals `module-sonar`, `module-dependency-check` of `module-npm-test`. Sonar en de drie releasevoorbeelden vereisen de beschermde `main`; `all` in een merge request voert de overige vijftien voorbeelden uit.
+Kies `java-service` om de standaardpipeline uit [ci-pipelines](https://github.com/woozer/ci-pipelines) uit te voeren met backend, UI en scans in modus `validate`. `pipeline_ref` selecteert daarvoor de pipelineversie (standaard `1.0.0`) of kandidaat-SHA; deze pipeline beheert haar eigen vaste moduleversies. Deployment en applicatierelease horen bij de volledige validatie in **hello-world**. `all` blijft de negentien componentvoorbeelden uitvoeren.
+
+Kies voor losse bouwblokken een van de vier pipelinevoorbeelden of een van de vijftien losse modules, zoals `module-sonar`, `module-dependency-check` of `module-npm-test`. Sonar en de drie releasevoorbeelden vereisen de beschermde `main`; `all` in een merge request voert de overige vijftien voorbeelden uit.
 
 De pipelines gebruiken rechtstreeks de [voorbeeld-YAML voor afnemers](https://github.com/woozer/ci-components/tree/main/examples/samples). De validatie voegt alleen lokale testinstellingen, controles en cleanup toe. Modulewijzigingen starten dit project automatisch met de gewijzigde component-SHA.
 
@@ -23,7 +25,7 @@ Build- en testartifacts blijven in GitLab. Sample-images en -charts gaan naar `d
 
 ## Waar staan de pipelines?
 
-De `.gitlab-ci.yml` in dit project laadt de centrale keuzelijst uit `tests/samples/options.yml` met `spec:include` en neemt `tests/samples/launcher.yml` op uit **ci-components**. De launcher handelt de samplekeuze af en start de gekozen voorbeelden als childpipelines.
+De `.gitlab-ci.yml` in dit project bevat het keuzeformulier voor beide bibliotheken. Voor componentvoorbeelden neemt hij `tests/samples/launcher.yml` uit **ci-components** op; die start de gekozen voorbeelden als childpipelines. Voor `java-service` neemt hij de sampleconfiguratie uit **ci-pipelines** op, die de publieke cataloguscomponent gebruikt. De bibliotheken hebben elk hun eigen versie en validatiepipeline.
 
 - [`examples/modules/`](https://github.com/woozer/ci-components/tree/main/examples/modules) bevat een uitvoerbaar voorbeeld per actieve module.
 - [`examples/samples/`](https://github.com/woozer/ci-components/tree/main/examples/samples) bevat de pipelines die afnemers kunnen overnemen.
