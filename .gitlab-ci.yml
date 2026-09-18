@@ -27,11 +27,11 @@ spec:
         - module-sonar
     library_ref:
       description: 'Component version or candidate SHA; used for the component examples'
-      default: '1.2.0'
+      default: '2.0.0'
       regex: '^([a-f0-9]{40}|(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*))$'
     pipeline_ref:
       description: 'Pipeline version or candidate SHA; used only for java-service'
-      default: '1.0.0'
+      default: '1.1.0'
       regex: '^([a-f0-9]{40}|(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*))$'
 ---
 include:
